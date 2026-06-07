@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Kuis Interaktif | Pergaulan Bebas, Zina, Cinta Allah, Akhlak & Maqashid Syariah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f7f0 0%, #e3e9e3 100%);
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Roboto', sans-serif;
+            padding: 2rem 1rem;
+            color: #1a2e1f;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            background: #2c5e2e;
+            color: white;
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 1.9rem;
+            letter-spacing: -0.5px;
+        }
+
+        .quiz-header p {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .stats span {
+            background: #f5b042;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            color: #2c2c2c;
+        }
+
+        .soal-card {
+            background: white;
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #d4e2cf;
+        }
+
+        .soal-header {
+            background: #f9f7e8;
+            padding: 1rem 1.8rem;
+            border-bottom: 2px solid #cbdcc2;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .soal-nomer {
+            font-weight: 800;
+            font-size: 1.2rem;
+            background: #2c5e2e;
+            color: white;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .soal-tipe {
+            background: #e2e9dd;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2c5e2e;
+        }
+
+        .soal-body {
+            padding: 1.5rem 1.8rem;
+        }
+
+        .soal-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            margin: 1rem 0 1rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            background: #fefef7;
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid #e2ebdd;
+        }
+
+        .option-item input {
+            margin-top: 0.2rem;
+            transform: scale(1.05);
+            accent-color: #2c5e2e;
+        }
+
+        .option-item label {
+            font-weight: 500;
+            color: #1f2e1c;
+        }
+
+        .essay-area {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border: 1.5px solid #cbdcc2;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .btn-check {
+            background: #2c5e2e;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 0.8rem;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-check:hover {
+            background: #1f4621;
+            transform: scale(0.98);
+        }
+
+        .feedback {
+            margin-top: 1.2rem;
+            background: #f3f6ef;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border-left: 6px solid #2c5e2e;
+            display: none;
+        }
+
+        .feedback.correct {
+            border-left-color: #2a9d6e;
+            background: #e6f4ea;
+        }
+
+        .feedback.wrong {
+            border-left-color: #c44536;
+            background: #ffeae6;
+        }
+
+        .feedback p {
+            margin: 0.3rem 0;
+        }
+
+        .feedback strong {
+            color: #2c5e2e;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #4a6741;
+        }
+
+        @media (max-width: 700px) {
+            .soal-body {
+                padding: 1rem;
+            }
+            .soal-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="quiz-header">
+        <h1>📖 Uji Pemahaman Islam</h1>
+        <p>Pergaulan Bebas & Zina • Cinta kepada Allah • Akhlak Tercela • Al-Kulliyatu Al-Khamsah</p>
+        <div class="stats">
+            <span>📌 28 PG Biasa (A-E)</span>
+            <span>✅ 12 MCMA (29-40) pilih >1</span>
+            <span>✍️ 5 Essay (41-45)</span>
+            <span>💡 Jawaban & pembahasan setiap soal</span>
+        </div>
+    </div>
+    <div id="quiz-container"></div>
+    <footer>🕌 Berdasarkan Al-Qur'an (QS. Al-Isra' 32, An-Nur 24:2) dan ajaran Islam | Kuis interaktif 45 soal</footer>
+</div>
+
+<script>
+    // ========== DATA SOAL ==========
+    // 28 PG biasa (5 opsi) -> nomor 1-28
+    // 12 MCMA (5 opsi, multiple correct) -> nomor 29-40
+    // 5 Essay -> nomor 41-45
+    // Materi lengkap bab 6,7,8,9
+    
+    const soalList = [];
+    
+    // ========== 28 PILIHAN GANDA BIASA (5 opsi) ==========
+    // Bab 6 (Zina & pergaulan bebas) PG 1-10
+    soalList.push({ nomor:1, type:"mcq", text:"Menurut QS. Al-Isra' ayat 32, Allah melarang umat Islam untuk ...", options:["A. Mendekati zina","B. Menikah muda","C. Berpoligami","D. Memukul istri","E. Meninggalkan shalat"], answer:"A", reasoning:"QS. Al-Isra' 32: 'Wa la taqrabuz zina...' (Janganlah kamu mendekati zina). Larangan mendekati zina lebih luas dari zina itu sendiri." });
+    soalList.push({ nomor:2, type:"mcq", text:"Pelaku zina yang sudah menikah (muhsan) hukumannya adalah ...", options:["A. Dicambuk 100 kali","B. Diasingkan 1 tahun","C. Dirajam sampai mati","D. Denda berat","E. Dipenjara seumur hidup"], answer:"C", reasoning:"Hukuman bagi muhshan (pernah menikah) adalah rajam berdasarkan ijma' sahabat dan hadits." });
+    soalList.push({ nomor:3, type:"mcq", text:"Ghairu muhsan adalah pelaku zina yang ...", options:["A. Sudah menikah","B. Belum menikah","C. Hamil di luar nikah","D. Menyebarkan aib","E. Sudah bercerai"], answer:"B", reasoning:"Ghairu muhsan adalah pelaku zina yang belum pernah menikah secara sah, hukumannya cambuk 100 kali dan diasingkan." });
+    soalList.push({ nomor:4, type:"mcq", text:"Berikut ini yang termasuk bukti terjadinya perzinaan menurut syariat, KECUALI ...", options:["A. Adanya 4 saksi laki-laki adil","B. Pengakuan pelaku","C. Qarinah (bukti pendukung)","D. Curiga tetangga tanpa saksi","E. Rekaman video yang jelas"], answer:"D", reasoning:"Bukti zina adalah: 4 saksi, pengakuan, atau qarinah yang kuat. Kecurigaan tanpa saksi tidak cukup." });
+    soalList.push({ nomor:5, type:"mcq", text:"Pergaulan bebas secara istilah adalah interaksi yang ...", options:["A. Sesuai norma agama","B. Melampaui batas-batas norma, moral dan hukum","C. Berlandaskan kekeluargaan","D. Hanya antar sesama jenis","E. Berdasarkan adat setempat"], answer:"B", reasoning:"Pergaulan bebas adalah pergaulan yang melampaui batas syariat, moral dan hukum yang berlaku, mengarah pada kemaksiatan." });
+    soalList.push({ nomor:6, type:"mcq", text:"QS. An-Nur ayat 2 memerintahkan tentang ...", options:["A. Hukuman bagi pencuri","B. Hukuman bagi pezina laki-laki dan perempuan","C. Perintah menutup aurat","D. Larangan riba","E. Perintah bersedekah"], answer:"B", reasoning:"QS. An-Nur 24:2: 'Az-zaniyatu waz zaaniy fajlidu kulla waahidin minhumaa mi'ata jaldah' – perintah mencambuk pezina." });
+    soalList.push({ nomor:7, type:"mcq", text:"Contoh mendekati zina (muqaddimah zina) adalah ...", options:["A. Menikah sesuai sunnah","B. Menonton video porno","C. Belajar agama","D. Berpuasa sunnah","E. Bersedekah"], answer:"B", reasoning:"Menonton atau membaca hal yang merangsang syahwat termasuk mendekati zina yang dilarang dalam QS Al-Isra' 32." });
+    soalList.push({ nomor:8, type:"mcq", text:"Dampak zina di dunia menurut materi antara lain ...", options:["A. Mendapat pahala berlimpah","B. Memperpendek umur & menghilangkan wibawa","C. Kaya raya","D. Diangkat derajatnya","E. Dihormati masyarakat"], answer:"B", reasoning:"Dampak zina di dunia: menghilangkan kewibawaan, menyebabkan kefakiran, memperpendek umur." });
+    soalList.push({ nomor:9, type:"mcq", text:"Akibat perzinaan bagi garis keturunan adalah ...", options:["A. Garis keturunan menjadi jelas","B. Garis keturunan menjadi tidak jelas (nasab terputus)","C. Anak menjadi lebih mulia","D. Tidak berpengaruh","E. Harta waris menjadi berkah"], answer:"B", reasoning:"Zina menyebabkan kekacauan nasab, anak zina tidak dinasabkan kepada pezina laki-laki, merusak keturunan." });
+    soalList.push({ nomor:10, type:"mcq", text:"Salah satu cara menghindari pergaulan bebas adalah ...", options:["A. Sering menyendiri di tempat sepi","B. Selektif dalam memilih teman","C. Membiarkan aurat terbuka","D. Mengikuti semua gaya hidup barat","E. Bergaul bebas tanpa batas"], answer:"B", reasoning:"Selektif memilih teman, menjaga pergaulan sehat, menutup aurat, memperkuat iman merupakan cara menghindari pergaulan bebas." });
+    
+    // Bab 7 (Cinta Allah, Khauf, Raja', Tawakal) PG 11-17
+    soalList.push({ nomor:11, type:"mcq", text:"Mahabbatullah berarti ...", options:["A. Takut kepada Allah","B. Cinta kepada Allah","C. Berharap kepada Allah","D. Tawakal kepada Allah","E. Benci kepada maksiat"], answer:"B", reasoning:"Mahabbah = cinta, Mahabbatullah adalah menempatkan cinta tertinggi hanya kepada Allah." });
+    soalList.push({ nomor:12, type:"mcq", text:"Berikut adalah tanda cinta kepada Allah, KECUALI ...", options:["A. Mencintai Rasulullah","B. Mencintai Al-Qur'an","C. Malas beribadah","D. Mendahulukan perkara yang dicintai Allah","E. Rajin shalat malam"], answer:"C", reasoning:"Tanda cinta Allah: mencintai Rasul, Al-Qur'an, ibadah, dan mendahulukan perintah Allah. Malas beribadah justru sebaliknya." });
+    soalList.push({ nomor:13, type:"mcq", text:"Khauf secara bahasa artinya ...", options:["A. Harap","B. Takut","C. Pasrah","D. Cemburu","E. Sabar"], answer:"B", reasoning:"Khauf adalah rasa takut kepada Allah karena keagungan-Nya dan takut akan siksa-Nya." });
+    soalList.push({ nomor:14, type:"mcq", text:"Sikap raja' (berharap) yang benar adalah ...", options:["A. Berputus asa dari rahmat Allah","B. Berharap rahmat dan karunia Allah sambil beramal saleh","C. Merasa aman dari makar Allah tanpa ibadah","D. Tidak perlu berusaha","E. Berharap tanpa amal"], answer:"B", reasoning:"Raja' adalah berharap rahmat Allah disertai amal saleh, tidak boleh putus asa dan tidak boleh merasa aman tanpa amal." });
+    soalList.push({ nomor:15, type:"mcq", text:"Manfaat sikap raja' adalah ...", options:["A. Merasa gelisah terus","B. Tenang dalam menghadapi kesulitan dan optimis","C. Sombong","D. Malas beribadah","E. Pesimis"], answer:"B", reasoning:"Dengan raja' hati menjadi tenang, optimis, rendah hati kepada Allah." });
+    soalList.push({ nomor:16, type:"mcq", text:"Pengertian tawakal yang tepat adalah ...", options:["A. Hanya pasrah tanpa usaha","B. Berserah diri setelah berikhtiar sungguh-sungguh","C. Tidak perlu bekerja","D. Bergantung sepenuhnya pada orang lain","E. Malas berdoa"], answer:"B", reasoning:"Tawakal: menyerahkan hasil kepada Allah setelah didahului ikhtiar maksimal." });
+    soalList.push({ nomor:17, type:"mcq", text:"Sikap khauf dan raja' yang seimbang akan melahirkan ...", options:["A. Kemaksiatan","B. Ketaatan dan menjauhi dosa","C. Kekufuran","D. Putus asa","E. Kesombongan"], answer:"B", reasoning:"Khauf mencegah dosa, raja' mendorong taat, kombinasi menjadikan hamba istiqamah." });
+    
+    // Bab 8 (Sikap Madzmumah) PG 18-23
+    soalList.push({ nomor:18, type:"mcq", text:"Ghadab secara bahasa artinya ...", options:["A. Marah","B. Sabar","C. Pemberani","D. Dengki","E. Riya"], answer:"A", reasoning:"Ghadab adalah sifat marah yang tercela jika berlebihan dan tidak terkendali." });
+    soalList.push({ nomor:19, type:"mcq", text:"Di antara cara menghindari marah (ghadab) adalah membaca ta'awudz, mengubah posisi, dan ...", options:["A. Berwudhu","B. Tidur","C. Makan berlebihan","D. Menangis","E. Memukul"], answer:"A", reasoning:"Rasulullah menganjurkan berwudhu ketika marah, karena air dapat meredakan api kemarahan." });
+    soalList.push({ nomor:20, type:"mcq", text:"Mujahadah an-nafs berarti ...", options:["A. Berperang melawan musuh","B. Mengendalikan diri dari dorongan nafsu","C. Berfoya-foya","D. Diam saja","E. Meninggalkan ibadah"], answer:"B", reasoning:"Mujahadah an-nafs adalah upaya sungguh-sungguh mengendalikan hawa nafsu yang melanggar syariat." });
+    soalList.push({ nomor:21, type:"mcq", text:"Manfaat kontrol diri (mujahadah an-nafs) adalah ...", options:["A. Menjadi inspirasi/teladan","B. Merusak reputasi","C. Mudah terjerumus dosa","D. Dicaci maki","E. Dijauhi teman"], answer:"A", reasoning:"Kontrol diri menjaga kehormatan dan menjadi teladan bagi orang lain." });
+    soalList.push({ nomor:22, type:"mcq", text:"Syaja'ah artinya ...", options:["A. Takut","B. Berani karena kebenaran","C. Nekat tanpa dasar","D. Penakut","E. Plin-plan"], answer:"B", reasoning:"Syaja'ah adalah keberanian berdasarkan kebenaran dan terpuji, lawannya jubun (penakut) dan tahawwur (nekat)." });
+    soalList.push({ nomor:23, type:"mcq", text:"Lawan kata dari syaja'ah yang berarti berani tanpa perhitungan (ceroboh) adalah ...", options:["A. Jubun","B. Tahawwur","C. Ghadab","D. Tawadhu","E. Qana'ah"], answer:"B", reasoning:"Tahawwur adalah nekat, berlawanan dengan syaja'ah yang terpuji." });
+    
+    // Bab 9 (Al-Kulliyatu Al-Khamsah) PG 24-28
+    soalList.push({ nomor:24, type:"mcq", text:"Al-Kulliyatu Al-Khamsah adalah lima prinsip dasar yang bertujuan ...", options:["A. Merusak umat","B. Mewujudkan kemaslahatan","C. Memperkaya diri","D. Menghalalkan segalanya","E. Menindas orang lemah"], answer:"B", reasoning:"Lima prinsip dasar (maqashid syariah) untuk mewujudkan kemaslahatan di dunia dan akhirat." });
+    soalList.push({ nomor:25, type:"mcq", text:"Hifzhu an-Nasl berarti menjaga ...", options:["A. Agama","B. Jiwa","C. Keturunan","D. Harta","E. Akal"], answer:"C", reasoning:"Hifzhu an-Nasl = menjaga keturunan, dengan pernikahan sah dan menghindari zina." });
+    soalList.push({ nomor:26, type:"mcq", text:"Menjaga akal (hifzhu al-'aql) dapat dilakukan dengan ...", options:["A. Menuntut ilmu dan menjauhi minuman keras","B. Malas belajar","C. Mengonsumsi narkoba","D. Tidur terus","E. Bergadang tanpa tidur"], answer:"A", reasoning:"Islam memerintahkan menuntut ilmu dan mengharamkan khamr/narkoba karena merusak akal." });
+    soalList.push({ nomor:27, type:"mcq", text:"Cara menjaga agama (hifzhu ad-din) adalah ...", options:["A. Meninggalkan shalat","B. Melaksanakan ibadah dan menjauhi larangan","C. Merusak tempat ibadah","D. Murtad","E. Menghina ulama"], answer:"B", reasoning:"Menjaga agama dengan melaksanakan perintah dan menjauhi larangan." });
+    soalList.push({ nomor:28, type:"mcq", text:"Yang termasuk hifzhu al-mal (menjaga harta) adalah ...", options:["A. Menggunakan harta untuk riba","B. Mencuri harta orang","C. Menggunakan harta dengan baik dan menghindari penipuan","D. Membuang harta sia-sia","E. Menimbun harta tanpa zakat"], answer:"C", reasoning:"Islam menjaga harta dengan cara halal, tidak curang, dan menjauhi pencurian/penipuan." });
+    
+    // ========== 12 MCMA (pilihan ganda kompleks, 5 opsi, bisa lebih dari 1) ==========
+    // MCMA 29-40 mencakup bab 6,7,8,9
+    soalList.push({ nomor:29, type:"mcma", text:"Siapakah yang termasuk pelaku zina muhsan? (Pilih lebih dari satu)", options:["A. Laki-laki yang sudah menikah sah","B. Perempuan yang sudah menikah sah","C. Perempuan yang belum pernah menikah","D. Janda yang sudah menikah sebelumnya","E. Duda yang belum pernah nikah"], answer:[0,1,3], reasoning:"Muhsan adalah orang yang sudah pernah menikah sah (laki/perempuan) baik masih terikat atau sudah cerai tapi pernah menikah. Jawaban A,B,D benar. C dan E belum menikah = ghairu muhsan." });
+    soalList.push({ nomor:30, type:"mcma", text:"Berikut yang merupakan dampak atau bahaya zina menurut ajaran Islam: (Pilih semua yang sesuai)", options:["A. Menimbulkan berbagai penyakit kelamin","B. Merusak kehormatan diri","C. Mendapatkan popularitas","D. Menghilangkan rasa malu","E. Memperkuat iman"], answer:[0,1,3], reasoning:"Zina menimbulkan penyakit, merusak kehormatan, menghilangkan rasa malu, dan memberikan dampak buruk masyarakat. Bukan popularitas dan tidak memperkuat iman." });
+    soalList.push({ nomor:31, type:"mcma", text:"Contoh perilaku yang 'mendekati zina' (muqaddimah) adalah:", options:["A. Berduaan dengan lawan jenis di tempat sepi (khalwat)","B. Menonton video dewasa","C. Membaca cerita vulgar","D. Menikah sesuai syariat","E. Berzikir di masjid"], answer:[0,1,2], reasoning:"Berkhalwat, menonton/membaca yang membangkitkan syahwat termasuk mendekati zina. Menikah sah dan berzikir justru menjauhkan." });
+    soalList.push({ nomor:32, type:"mcma", text:"Dampak zina di akhirat:", options:["A. Mendapat murka Allah","B. Hisab yang buruk","C. Siksa pedih","D. Dimasukkan surga tanpa hisab","E. Diangkat derajatnya"], answer:[0,1,2], reasoning:"Di akhirat pelaku zina mendapatkan murka Allah, hisab buruk, dan siksa pedih, kecuali jika bertaubat sebelum mati." });
+    soalList.push({ nomor:33, type:"mcma", text:"Cara meningkatkan cinta kepada Allah (Mahabbatullah) antara lain:", options:["A. Memahami besarnya cinta Allah kepada hamba","B. Senantiasa membersihkan hati","C. Maksiat terang-terangan","D. Meninggalkan Al-Qur'an","E. Putus asa dari rahmat Allah"], answer:[0,1], reasoning:"Membersihkan hati dan memahami cinta Allah adalah cara meningkatkan cinta, sedangkan maksiat justru menjauhkan." });
+    soalList.push({ nomor:34, type:"mcma", text:"Tanda-tanda takut kepada Allah (khauf):", options:["A. Menghindari iri dan dengki","B. Menjaga lisan dari perkataan buruk","C. Suka memfitnah","D. Tampak ketaatan kepada Allah","E. Berani durhaka"], answer:[0,1,3], reasoning:"Takwa akan mendorong seseorang menjaga lisan, hati dari dengki, serta meningkatkan ketaatan." });
+    soalList.push({ nomor:35, type:"mcma", text:"Manfaat tawakal dalam kehidupan:", options:["A. Pekerjaan terasa lebih mudah","B. Terhindar dari keputusasaan","C. Menghargai hasil usaha","D. Menimbulkan kesombongan","E. Malas bekerja"], answer:[0,1,2], reasoning:"Tawakal menjadikan jiwa tenang, menghargai ikhtiar, tidak putus asa, serta diberkahi Allah." });
+    soalList.push({ nomor:36, type:"mcma", text:"Faktor rohani penyebab ghadab (marah) antara lain:", options:["A. Ujub (bangga diri)","B. Pendidikan yang kurang tepat","C. Kelelahan fisik","D. Tekanan hidup","E. Makan berlebihan"], answer:[0,1,3], reasoning:"Faktor rohani: ujub, pola asuh salah, tekanan masalah. Kelelahan fisik termasuk faktor fisik, makan berlebihan bisa memicu tapi bukan faktor rohani utama." });
+    soalList.push({ nomor:37, type:"mcma", text:"Berikut adalah sikap syaja'ah (keberanian terpuji):", options:["A. Berani menghadapi musuh di medan perang","B. Berani menyampaikan kebenaran kepada penguasa","C. Berani mengakui kesalahan","D. Berani melakukan korupsi","E. Berani bermaksiat"], answer:[0,1,2], reasoning:"Syaja'ah mencakup perang fisabilillah, kebenaran, dan mengakui kesalahan. Korupsi dan maksiat adalah kejahatan bukan keberanian terpuji." });
+    soalList.push({ nomor:38, type:"mcma", text:"Cara meningkatkan kontrol diri (mujahadah an-nafs):", options:["A. Mengetahui akibat setiap perbuatan","B. Bertobat dan introspeksi","C. Mengambil keputusan bijak","D. Mengikuti hawa nafsu","E. Bersikap gegabah"], answer:[0,1,2], reasoning:"Dengan ilmu, tobat, dan kebijaksanaan nafsu bisa dikendalikan. Mengikuti hawa nafsu justru sebaliknya." });
+    soalList.push({ nomor:39, type:"mcma", text:"Yang termasuk Al-Kulliyatu Al-Khamsah adalah: (Pilih semua)", options:["A. Hifzhu ad-Din","B. Hifzhu an-Nafs","C. Hifzhu al-Mal","D. Hifzhu al-Jah","E. Hifzhu al-ird"], answer:[0,1,2], reasoning:"Lima prinsip: menjaga agama, jiwa, akal, keturunan, harta. Hifzhu al-Jah (wibawa) dan al-'ird (kehormatan) sebenarnya bagian dari lainnya, tetapi yang baku adalah 5 tersebut, di sini yang termasuk adalah A,B,C." });
+    soalList.push({ nomor:40, type:"mcma", text:"Tingkatan menjaga Al-Kulliyatu Al-Khamsah terdiri dari:", options:["A. Min nahiyati al-wujud (mewujudkan)","B. Min nahiyati al-'adam (mencegah kerusakan)","C. Membiarkan kerusakan","D. Mengabaikan maqashid","E. Menghancurkan syariat"], answer:[0,1], reasoning:"Dua tingkatan: mewujudkan & mempertahankan (min nahiyati al-wujud) dan mencegah hal yang merusak (min nahiyati al-'adam)." });
+    
+    // ========== 5 ESSAY (41-45) ==========
+    soalList.push({ nomor:41, type:"essay", text:"Jelaskan minimal 3 cara menghindari pergaulan bebas berdasarkan materi dan dalil yang relevan!", modelAnswer:["menjaga pergaulan sehat","menutup aurat","selektif memilih teman","memperkuat iman","menjauhi tempat maksiat"], reasoning:"Cara menghindari pergaulan bebas: menjaga pergaulan yang sehat dan beretika, menutup aurat, selektif dalam memilih teman, memperkuat iman, serta menjauhi tempat-tempat yang mengundang hawa nafsu." });
+    soalList.push({ nomor:42, type:"essay", text:"Jelaskan perbedaan antara khauf (takut) dan raja' (berharap) serta bagaimana seorang muslim menyeimbangkan keduanya!", modelAnswer:["khauf mencegah maksiat","raja' mendorong taat","seimbang antara takut dan harap","tidak putus asa","tidak merasa aman"], reasoning:"Khauf adalah rasa takut kepada Allah sehingga menjauhi dosa, raja' adalah optimis rahmat Allah sehingga giat beribadah. Seimbang agar tidak putus asa dan tidak merasa aman dari siksa." });
+    soalList.push({ nomor:43, type:"essay", text:"Sebutkan tiga tingkatan orang dalam menghadapi ghadab (marah) menurut materi, dan jelaskan satu cara mengendalikan marah!", modelAnswer:["tahan marah","tidak marah berlebihan","proporsional","berwudhu","membaca ta'awudz"], reasoning:"Tingkatan: 1) mampu menahan marah, 2) tidak memiliki marah berlebihan, 3) bersikap proporsional. Cara: membaca ta'awudz, mengubah posisi, wudhu." });
+    soalList.push({ nomor:44, type:"essay", text:"Mengapa syaja'ah (berani) diperlukan dalam Islam? Berikan contoh sikap syaja'ah sehari-hari!", modelAnswer:["menegakkan kebenaran","takut hanya kepada Allah","mengakui kesalahan","berani menolak maksiat"], reasoning:"Syaja'ah diperlukan untuk membela kebenaran, amar ma'ruf nahi munkar. Contoh: berani menolak ajakan maksiat, berani mengakui kesalahan di sekolah, berani menyampaikan kritik membangun." });
+    soalList.push({ nomor:45, type:"essay", text:"Jelaskan pengertian Hifzhu an-Nafs (menjaga jiwa) dan berikan dua contoh penerapannya dalam kehidupan sehari-hari!", modelAnswer:["menjaga kesehatan","menghindari bahaya","tidak bunuh diri","memakai helm","menjaga pola makan"], reasoning:"Hifzhu an-Nafs: menjaga keselamatan jiwa raga. Contoh: menjaga pola makan sehat, menghindari narkoba, memakai helm saat berkendara, tidak melakukan bunuh diri." });
+    
+    // ========== RENDER KUIS ==========
+    const container = document.getElementById('quiz-container');
+    
+    function renderQuiz() {
+        let html = '';
+        soalList.forEach(soal => {
+            const tipeLabel = soal.type === 'mcq' ? 'Pilihan Ganda (1 jawaban A-E)' : (soal.type === 'mcma' ? 'Pilihan Ganda Kompleks (bisa >1)' : 'Essay (uraian)');
+            html += `<div class="soal-card" data-id="${soal.nomor}" data-type="${soal.type}">
+                        <div class="soal-header">
+                            <span class="soal-nomer">Soal ${soal.nomor}</span>
+                            <span class="soal-tipe">${tipeLabel}</span>
+                        </div>
+                        <div class="soal-body">
+                            <div class="soal-text">${soal.text}</div>
+                            <div class="options-area" id="options-${soal.nomor}">`;
+            
+            if (soal.type === 'mcq') {
+                soal.options.forEach((opt, idx) => {
+                    const letter = String.fromCharCode(65+idx);
+                    html += `<div class="option-item">
+                                <input type="radio" name="q${soal.nomor}" value="${letter}" id="q${soal.nomor}_${idx}">
+                                <label for="q${soal.nomor}_${idx}">${opt}</label>
+                            </div>`;
+                });
+                html += `<button class="btn-check" data-id="${soal.nomor}" data-type="mcq">🔍 Periksa Jawaban</button>`;
+            } 
+            else if (soal.type === 'mcma') {
+                soal.options.forEach((opt, idx) => {
+                    html += `<div class="option-item">
+                                <input type="checkbox" name="q${soal.nomor}" value="${idx}" id="q${soal.nomor}_chk${idx}">
+                                <label for="q${soal.nomor}_chk${idx}">${opt}</label>
+                            </div>`;
+                });
+                html += `<button class="btn-check" data-id="${soal.nomor}" data-type="mcma">✅ Periksa Jawaban (MCMA)</button>`;
+            }
+            else if (soal.type === 'essay') {
+                html += `<textarea class="essay-area" id="essay-${soal.nomor}" rows="3" placeholder="Tulis jawaban Anda di sini..."></textarea>
+                         <button class="btn-check" data-id="${soal.nomor}" data-type="essay">✍️ Periksa Essay</button>`;
+            }
+            
+            html += `</div><div class="feedback" id="feedback-${soal.nomor}"></div></div></div>`;
+        });
+        container.innerHTML = html;
+        
+        // event listener untuk semua tombol periksa
+        document.querySelectorAll('.btn-check').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const nomor = parseInt(btn.getAttribute('data-id'));
+                const type = btn.getAttribute('data-type');
+                const soal = soalList.find(s => s.nomor === nomor);
+                if (!soal) return;
+                const feedbackDiv = document.getElementById(`feedback-${nomor}`);
+                let isCorrect = false;
+                let correctAnswerDisplay = '';
+                
+                if (type === 'mcq') {
+                    const selected = document.querySelector(`input[name="q${nomor}"]:checked`);
+                    if (!selected) {
+                        feedbackDiv.innerHTML = `<p>⚠️ Belum memilih jawaban.</p>`;
+                        feedbackDiv.style.display = 'block';
+                        feedbackDiv.className = 'feedback wrong';
+                        return;
+                    }
+                    const userVal = selected.value;
+                    isCorrect = (userVal === soal.answer);
+                    const correctLetter = soal.answer;
+                    const correctText = soal.options[correctLetter.charCodeAt(0)-65];
+                    correctAnswerDisplay = `Jawaban benar: ${correctLetter}. ${correctText}`;
+                } 
+                else if (type === 'mcma') {
+                    const selectedChecks = document.querySelectorAll(`#options-${nomor} input[type="checkbox"]:checked`);
+                    const selectedIndices = Array.from(selectedChecks).map(cb => parseInt(cb.value)).sort((a,b)=>a-b);
+                    const correctIndices = [...soal.answer].sort((a,b)=>a-b);
+                    isCorrect = JSON.stringify(selectedIndices) === JSON.stringify(correctIndices);
+                    const correctOptionsText = correctIndices.map(i => soal.options[i]).join(', ');
+                    correctAnswerDisplay = `Jawaban benar: ${correctOptionsText}`;
+                } 
+                else if (type === 'essay') {
+                    const essayText = document.getElementById(`essay-${nomor}`).value.trim().toLowerCase();
+                    const keywords = soal.modelAnswer || [];
+                    let matchCount = 0;
+                    for (let kw of keywords) {
+                        if (essayText.includes(kw.toLowerCase())) matchCount++;
+                    }
+                    isCorrect = matchCount >= 2;
+                    correctAnswerDisplay = `Kunci jawaban mencakup: ${keywords.slice(0,4).join(', ')}... (disesuaikan)`;
+                }
+                
+                const statusText = isCorrect ? '✔️ Benar!' : '❌ Salah';
+                const reasoningHtml = `<p><strong>${statusText}</strong></p><p><strong>📖 Pembahasan:</strong> ${soal.reasoning}</p>${type !== 'essay' ? `<p><strong>✅ Jawaban tepat:</strong> ${correctAnswerDisplay}</p>` : `<p><strong>📝 Saran jawaban:</strong> ${soal.reasoning}</p>`}`;
+                feedbackDiv.innerHTML = reasoningHtml;
+                feedbackDiv.style.display = 'block';
+                feedbackDiv.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+            });
+        });
+    }
+    
+    renderQuiz();
+</script>
+</body>
+</html>
